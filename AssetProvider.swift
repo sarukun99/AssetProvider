@@ -24,12 +24,17 @@ class AssetProvider {
             assets += album.fetchAssets(self._where)
         }
         
+        guard let _ = self._groupBy else{
+            self._collections = [AssetProviderGroup(assets:assets)]
+            return self._collections!
+        }
         
-        self._collections = assets.groupBy(self._groupBy)
+        self._collections = assets.groupBy(self._groupBy!)
         .flatMap({ (assets) -> AssetProviderGroup in
             return AssetProviderGroup(assets:assets)
         })
         
+        self._collections = self._collections?.sort{ (lhs, rhs) in return lhs.creationDate < rhs.creationDate }
         return self._collections!
     }
     
@@ -55,17 +60,20 @@ class AssetProvider {
     
     private var _where   : NSPredicate?
     private var _groupBy : ((asset: AssetProviderAsset)->String)?
+    
 }
 
 extension AssetProvider {
     
     func Where(predicate : NSPredicate) -> Self{
         self._where = predicate
+        self._collections = nil
         return self
     }
     
     func GroupBy(groupBy : ((asset: AssetProviderAsset)->String)) -> Self{
-        self._groupBy = _groupBy
+        self._groupBy = groupBy
+        self._collections = nil
         return self
     }
 }

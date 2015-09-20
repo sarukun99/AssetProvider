@@ -11,25 +11,22 @@ import Foundation
 
 extension Array {
     
-    func groupBy(evalKey : ((elem:Element)->String)?) -> [[Element]] {
-        
-        if let evalKey = evalKey {
-            var groups = [String:[Element]]()
-        
-            self.forEach { (elem) -> () in
-                let key = evalKey(elem: elem)
-                if let _ = groups[key] {
-                    groups[key]!.append(elem)
-                }
-                groups[key] = [Element]()
-                groups[key]!.append(elem)
-            }
-        
-        
-            return groups.flatMap{
-                return $1
-            }
-        }
-        return [self]
+    func groupBy(evalKey : ((elem:Element)->String)) -> [[Element]] {
+      
+       var groups = [String:[Element]]()
+       self.forEach { (elem) -> () in
+           let key = evalKey(elem: elem)
+           NSLog(key)
+           if let _ = groups[key] {
+               groups[key]!.append(elem)
+           }else{
+               groups[key] = [Element]()
+               groups[key]!.append(elem)
+           }
+       }
+      
+       return groups.flatMap{
+           return $1
+       }
     }
 }

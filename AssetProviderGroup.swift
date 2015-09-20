@@ -25,5 +25,9 @@ class AssetProviderGroup {
         return assets?.count ?? 0
     }
     
+    var creationDate : NSDate {
+        return self.assets?.first?.creationDate ?? NSDate()
+    }
+    
     private var assets : [AssetProviderAsset]?
 }

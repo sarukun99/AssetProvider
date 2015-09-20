@@ -13,13 +13,15 @@ class AssetProviderAsset {
     
     init(){}
     
+    var pick : Int  = 2
+    
     convenience init(asset: PHAsset){
         self.init()
         self.asset = asset
     }
     
-    var creationDate : String{
-        return String(self.asset?.creationDate?.dayDate)
+    var creationDate : NSDate?{
+        return self.asset?.creationDate?.dayDate
     }
     
     func setImage( size:CGSize, complete:((image:UIImage) -> Void)){
@@ -32,6 +34,7 @@ class AssetProviderAsset {
             }
         }
     }
+    
     
     private var asset : PHAsset?
     
